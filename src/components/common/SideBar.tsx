@@ -12,6 +12,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import ReportIcon from '@mui/icons-material/Report';
+import { NavLink } from 'react-router-dom';
+import { CSSProperties } from 'react';
 
 interface SideBarProps {
     drawerWidth: number;
@@ -39,21 +41,36 @@ const SideBar = ({ drawerWidth, mobileOpen, handleDrawerToggle }: SideBarProps) 
             icon: ReportIcon,
         },
     ];
+
+
+    const baseLinkStyle: CSSProperties = {
+        textDecoration: 'none',
+        color: 'inherit',
+        display: 'block',
+    }
+
+    const activeLinkStyle: CSSProperties = {
+        backgroundColor: 'primary.light',
+    }
     const drawer = (
         <div>
           <Toolbar />
           <Divider />
           <List>
             {MenuItems.map((item, index) => (
+            <NavLink key={item.text} to={item.path} style={({ isActive }) => {console.log("選択されたメニューは", item.text, isActive)
+                return {
+                    ...baseLinkStyle,
+                    ...(isActive ? activeLinkStyle : {}),
+                }
+            }}>
               <ListItem key={index} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-                    <item.icon />
-                  </ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
+                <ListItemIcon>
+                  <item.icon />
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
               </ListItem>
+            </NavLink>
             ))}
           </List>
         </div>
